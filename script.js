@@ -1,5 +1,7 @@
 let picture = document.getElementsByClassName('img-button');
 
+let allSmallImg = document.getElementById('main-img-wrapper')
+
 
 let allPictures = [
     { img: '/IMG/Property 1=anime-8788959_1280.jpg.png', name: 'city-night-img' },
@@ -23,9 +25,9 @@ function viewBigImg(img, name) {
     let allImgFirstRow = document.getElementById('main-img-first-line-id');
     let allImgSecondRow = document.getElementById('main-img-second-line-id');
 
-    allImgFirstRow.classList.toggle('smallIMG');
-    allImgSecondRow.classList.toggle('smallIMG');   //den beiden Bilderreihen von der main page werden hier Klassen hinzugefügt um das 
-                                                    //Design zu verändern wenn eines der Bilder angeklickt wurde
+    allSmallImg.classList.toggle('smallIMG');
+/*     allImgSecondRow.classList.toggle('smallIMG');   //den beiden Bilderreihen von der main page werden hier Klassen hinzugefügt um das 
+ */                                                    //Design zu verändern wenn eines der Bilder angeklickt wurde
 
 
     bigImg.innerHTML = `<div class="overlay-wrapper">
@@ -38,8 +40,8 @@ function viewBigImg(img, name) {
 
 
         <div class="overlax-klick-next">
-            <button id = "previous-img" onclick = "">
-                <img src="./IMG/Button.svg" alt="klick-next-button"> </button>
+            <button id = "previous-img" onclick = "showpreviousBigImg()">
+                <img src="./IMG/Button (1).svg" alt="klick-next-button"> </button>
                 <p></p>
                <button id = "nex-img"  onclick = "shownextBigImg()"> <img src="./IMG/Button.svg" alt="klick-next-button"></button>
            
@@ -47,7 +49,7 @@ function viewBigImg(img, name) {
     </div>`;
 
 
-}
+} 
 
 
 function shownextBigImg(x) {
@@ -64,15 +66,62 @@ for (let index = 0; index < allPictures.length; index++) {  //Schleife geht das 
         
         let nextImgIndex = index + 1
 
-         if (nextImgIndex >= allPictures.length){ //damit es zu index 0 springt wenn es beim letzten angekommen ist 
+         /* if (nextImgIndex >= allPictures.length){ //damit es zu index 0 springt wenn es beim letzten angekommen ist 
            nextImgIndex = 0 //auf null setzten da es am Ende angekommen ist 
             
-         }
-         newImgContainer.innerHTML = `<img id = "main-img" src="${allPictures[idk].img}" alt="">`   //neues Bild und Text ins HTML 
-         newOverlayHeading.innerHTML = `  <h2>${allPictures[idk].name}</h2>`
+         } */
+         newImgContainer.innerHTML = `<img id = "main-img" src="${allPictures[nextImgIndex].img}" alt="">`   //neues Bild und Text ins HTML 
+         newOverlayHeading.innerHTML = `  <h2>${allPictures[nextImgIndex].name}</h2>`
         break;  //Abbruch der Schleife. Könnte man allerdings auch weglassen (glaube ich)
     }
    
 }
 }
 
+
+function showpreviousBigImg() {
+    const newImgContainer = document.getElementById('overlay-main-content')
+     const newOverlayHeading = document.getElementById('overlay-heading')
+    const currentImg = document.getElementById('main-img')
+    const srcCurrenImg = currentImg.src;
+
+for (let index = 0; index < allPictures.length; index++) {  //Schleife geht das Array "allPictures" durch 
+
+   let saubererBrowserPfad = decodeURIComponent(srcCurrenImg); //wandelt wieder in Leerzeichen um, 
+//damit sie mit den Elementen aus dem Array verglichen werden können
+    if (saubererBrowserPfad.includes(allPictures[index].img) ){ //Prüfung ob der src-pfad des aktuellen Bildes (currentImg) dem jeweiligen Pfad aus der Schleife beinhaltet
+        
+        let nextImgIndex = index - 1
+
+         /* if (nextImgIndex >= allPictures.length){ //damit es zu index 0 springt wenn es beim letzten angekommen ist 
+           nextImgIndex = 0 //auf null setzten da es am Ende angekommen ist 
+            
+         } */
+         newImgContainer.innerHTML = `<img id = "main-img" src="${allPictures[nextImgIndex].img}" alt="">`   //neues Bild und Text ins HTML 
+         newOverlayHeading.innerHTML = `  <h2>${allPictures[nextImgIndex].name}</h2>`
+        break;  //Abbruch der Schleife. Könnte man allerdings auch weglassen (glaube ich)
+    }
+   
+}
+}
+
+function loadIMG (){
+
+    
+
+    allPictures.forEach(element => { 
+        
+
+
+        allSmallImg.innerHTML += `  <button class="img-button" onclick = "viewBigImg('${element.img}','${element.name}')"><img id="pic"
+                                src="${element.img}" alt="${element.name}"></button>`
+        
+    })
+
+
+
+        
+    }
+
+
+    let laden =  loadIMG ();
